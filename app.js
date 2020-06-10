@@ -91,29 +91,56 @@ function promptIntern() {
 };
 
 function promptAddNext() {
-    return Inquirer.prompt([
+    return inquirer.prompt([
         {
             type: "list",
             name: "addEmployee",
             message: "Which type of team member would you like to add?",
             choices: ["Engineer", "Intern", "I don't want to add any more team members"]
         }
-    ])
+    ]);
 };
 
 function nextEmployee() {
     promptAddNext().then(function (res) {
-        //if res.promptAddNext === "Engineer" {promptEngineer},then push to data
-        //if res.promptAddNext === "Intern" {promptIntern},then push to data
-        //else do nothing
-    })
+        if (res.promptAddNext === "Engineer") {
+            promptEngineer().then(function (res) {
+                const engineer = new Engineer(res.name, res.id, res.email, res.officeNumber)
+                //data.push(engineer);
+                nextEmployee();
+            });
+        };
+        if (res.promptAddNext === "Intern") {
+            promptIntern().then(function (res) {
+                const intern = new Intern(res.name, res.id, res.email, res.officeNumber)
+                //data.push(intern);
+                nextEmployee();
+            });
+        } else {
+            
+        };
+    });
 };
 
 promptManager().then(function (res) {
     const manager = new Manager(res.name, res.id, res.email, res.officeNumber);
-    //push to data
+    //data.push(manager);
     nextEmployee();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -121,9 +148,8 @@ promptManager().then(function (res) {
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML, including temp div for each employee!
 
-const data = [];
-
-render(data);//need to pass in the array of objects
+//let data = [];
+//render(data);//need to pass in the array of objects
 
 
 
@@ -133,5 +159,5 @@ render(data);//need to pass in the array of objects
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
 
-
+//fs write team.html in the output folder
 

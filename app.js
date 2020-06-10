@@ -14,7 +14,7 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-function promptUser() {
+function promptManager() {
     return inquirer.prompt([
         {
             type: "input",
@@ -35,14 +35,12 @@ function promptUser() {
             type: "input",
             name: "officeNumber",
             message: "Enter office number of the manager: "
-        },
-        {
-            type: "list",
-            name: "Employee",
-            message: "Which type of team member would you like to add?",
-            choices: ["Engineer", "Intern", "I don't want to add any more team members"]
-        },
+        }
+    ]);
+};
 
+function promptEngineer() {
+    return inquirer.prompt([
         {
             type: "input",
             name: "name",
@@ -62,14 +60,13 @@ function promptUser() {
             type: "input",
             name: "github",
             message: "Enter GitHub Username of the engineer: "
-        },
-        {
-            type: "list",
-            name: "Employee",
-            message: "Which type of team member would you like to add?",
-            choices: ["Engineer", "Intern", "I don't want to add any more team members"]
-        },
-  
+        }
+    ]);
+};
+
+
+function promptIntern() {
+    return inquirer.prompt([
         {
             type: "input",
             name: "name",
@@ -89,19 +86,46 @@ function promptUser() {
             type: "input",
             name: "school",
             message: "Enter the school the intern studied at: "
-        },
+        }
+    ]);
+};
+
+function promptAddNext() {
+    return Inquirer.prompt([
         {
             type: "list",
-            name: "Employee",
+            name: "addEmployee",
             message: "Which type of team member would you like to add?",
             choices: ["Engineer", "Intern", "I don't want to add any more team members"]
-        },
-    ]);
-  }
+        }
+    ])
+};
+
+function nextEmployee() {
+    promptAddNext().then(function (res) {
+        //if res.promptAddNext === "Engineer" {promptEngineer},then push to data
+        //if res.promptAddNext === "Intern" {promptIntern},then push to data
+        //else do nothing
+    })
+};
+
+promptManager().then(function (res) {
+    const manager = new Manager(res.name, res.id, res.email, res.officeNumber);
+    //push to data
+    nextEmployee();
+});
+
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
+// generate and return a block of HTML, including temp div for each employee!
+
+const data = [];
+
+render(data);//need to pass in the array of objects
+
+
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
@@ -110,18 +134,4 @@ function promptUser() {
 // does not.
 
 
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, function (err) {
-        if (err) { return console.log(err); }
-        console.log("You got it Girl or Boy!");
-    });
 
-}
-
-function init() {
-    inquirer.prompt(questions).then(answers => {
-        writeToFile("README.md", util(answers));
-    })
-}
-
-init();

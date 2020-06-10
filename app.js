@@ -18,108 +18,84 @@ function promptUser() {
     return inquirer.prompt([
         {
             type: "input",
-            name: "managerName",
+            name: "name",
             message: "Enter name of the Manager: "
         },
         {
             type: "input",
-            name: "managerID",
+            name: "id",
             message: "Enter ID of the the manager: "
         },
         {
             type: "input",
-            name: "managerEmail",
+            name: "email",
             message: "Enter email of the manager: "
         },
         {
             type: "input",
-            name: "managerOffice",
+            name: "officeNumber",
             message: "Enter office number of the manager: "
         },
         {
+            type: "list",
+            name: "Employee",
+            message: "Which type of team member would you like to add?",
+            choices: ["Engineer", "Intern", "I don't want to add any more team members"]
+        },
+
+        {
             type: "input",
-            name: "1stEngName",
-            message: "Enter name of the 1st engineer: "
+            name: "name",
+            message: "Enter name of the engineer: "
         },
         {
             type: "input",
-            name: "1stEngID",
-            message: "Enter ID of the 1st engineer: "
+            name: "id",
+            message: "Enter ID of the engineer: "
         },
         {
             type: "input",
-            name: "1stEngEmail",
-            message: "Enter email of the 1st engineer: "
+            name: "email",
+            message: "Enter email of the engineer: "
         },
         {
             type: "input",
-            name: "1stEngGitHub",
-            message: "Enter GitHub Username of the 1st engineer: "
+            name: "github",
+            message: "Enter GitHub Username of the engineer: "
         },
         {
-            type: "input",
-            name: "2ndEngName",
-            message: "Enter name of the 2nd engineer: "
-        },
-        {
-            type: "input",
-            name: "2ndEngID",
-            message: "Enter ID of the 2nd engineer: "
-        },
-        {
-            type: "input",
-            name: "2ndEngEmail",
-            message: "Enter email of the 2nd engineer: "
-        },
-        {
-            type: "input",
-            name: "2ndEngGitHub",
-            message: "Enter GitHub Username of the 2nd engineer: "
+            type: "list",
+            name: "Employee",
+            message: "Which type of team member would you like to add?",
+            choices: ["Engineer", "Intern", "I don't want to add any more team members"]
         },
   
         {
             type: "input",
-            name: "3rdEngName",
-            message: "Enter name of the 3rd engineer: "
-        },
-        {
-            type: "input",
-            name: "3rdEngID",
-            message: "Enter ID of the 3rd engineer: "
-        },
-        {
-            type: "input",
-            name: "3rdEngEmail",
-            message: "Enter email of the 3rd engineer: "
-        },
-        {
-            type: "input",
-            name: "3rdEngGitHub",
-            message: "Enter GitHub Username of the 3rd engineer: "
-        },
-        
-  
-        {
-            type: "input",
-            name: "internName",
+            name: "name",
             message: "Enter name of the Intern: "
         },
         {
             type: "input",
-            name: "internID",
+            name: "id",
             message: "Enter ID of the Intern: "
         },
         {
             type: "input",
-            name: "internEmail",
+            name: "email",
             message: "Enter email of the Intern:"
         },
         {
             type: "input",
-            name: "internSchool",
+            name: "school",
             message: "Enter the school the intern studied at: "
         },
-       
+        {
+            type: "list",
+            name: "Employee",
+            message: "Which type of team member would you like to add?",
+            choices: ["Engineer", "Intern", "I don't want to add any more team members"]
+        },
     ]);
   }
 
@@ -133,12 +109,19 @@ function promptUser() {
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
 
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
 
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+function writeToFile(fileName, data) {
+    fs.writeFile(fileName, data, function (err) {
+        if (err) { return console.log(err); }
+        console.log("You got it Girl or Boy!");
+    });
+
+}
+
+function init() {
+    inquirer.prompt(questions).then(answers => {
+        writeToFile("README.md", util(answers));
+    })
+}
+
+init();

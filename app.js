@@ -18,22 +18,26 @@ function promptManager() {
         {
             type: "input",
             name: "name",
-            message: "Enter name of the Manager: "
+            message: "Enter name of the Manager: ",
+            default: "Bob"
         },
         {
             type: "input",
             name: "id",
-            message: "Enter ID of the the manager: "
+            message: "Enter ID of the the manager: ",
+            default: "1"
         },
         {
             type: "input",
             name: "email",
-            message: "Enter email of the manager: "
+            message: "Enter email of the manager: ",
+            default: "bob@builder.com"
         },
         {
             type: "input",
             name: "officeNumber",
-            message: "Enter office number of the manager: "
+            message: "Enter office number of the manager: ",
+            default: "123"
         }
     ]);
 };
@@ -69,22 +73,26 @@ function promptIntern() {
         {
             type: "input",
             name: "name",
-            message: "Enter name of the Intern: "
+            message: "Enter name of the Intern: ",
+            default: "New Guy"
         },
         {
             type: "input",
             name: "id",
-            message: "Enter ID of the Intern: "
+            message: "Enter ID of the Intern: ",
+            default: ".5"
         },
         {
             type: "input",
             name: "email",
-            message: "Enter email of the Intern:"
+            message: "Enter email of the Intern:",
+            default: "newguy@builder.com"
         },
         {
             type: "input",
             name: "school",
-            message: "Enter the school the intern studied at: "
+            message: "Enter the school the intern studied at: ",
+            default: "ASU"
         }
     ]);
 };
@@ -104,13 +112,13 @@ function nextEmployee() {
     promptAddNext().then(function (res) {
         if (res.addEmployee === 'Engineer') {
             promptEngineer().then(function (res) {
-                const engineer = new Engineer(res.name, res.id, res.email, res.officeNumber);
+                const engineer = new Engineer(res.name, res.id, res.email, res.github);
                 teamData.push(engineer);
                 nextEmployee();
             });
         } else if (res.addEmployee === 'Intern') {
             promptIntern().then(function (res) {
-                const intern = new Intern(res.name, res.id, res.email, res.officeNumber);
+                const intern = new Intern(res.name, res.id, res.email, res.school);
                 teamData.push(intern);
                 nextEmployee();
             });
@@ -139,5 +147,6 @@ function writeToFile(directory, fileName, data) {
        }
    });
 };
+
 
 

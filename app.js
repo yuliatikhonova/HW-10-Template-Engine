@@ -11,9 +11,8 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const teamData = [];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
 function promptManager() {
     return inquirer.prompt([
         {
@@ -96,68 +95,49 @@ function promptAddNext() {
             type: "list",
             name: "addEmployee",
             message: "Which type of team member would you like to add?",
-            choices: ["Engineer", "Intern", "I don't want to add any more team members"]
+            choices: ['Engineer', 'Intern', 'I do not want to add any more team members']
         }
     ]);
 };
 
 function nextEmployee() {
     promptAddNext().then(function (res) {
-        if (res.promptAddNext === "Engineer") {
+        if (res.addEmployee === 'Engineer') {
             promptEngineer().then(function (res) {
-                const engineer = new Engineer(res.name, res.id, res.email, res.officeNumber)
-                //data.push(engineer);
+                const engineer = new Engineer(res.name, res.id, res.email, res.officeNumber);
+                teamData.push(engineer);
                 nextEmployee();
             });
-        };
-        if (res.promptAddNext === "Intern") {
+        } else if (res.addEmployee === 'Intern') {
             promptIntern().then(function (res) {
-                const intern = new Intern(res.name, res.id, res.email, res.officeNumber)
-                //data.push(intern);
+                const intern = new Intern(res.name, res.id, res.email, res.officeNumber);
+                teamData.push(intern);
                 nextEmployee();
             });
         } else {
-            
+            //console.log('You are good to go!');
+            var teamHtml = render(teamData);
+            writeToFile(OUTPUT_DIR, outputPath, teamHtml);
         };
     });
 };
 
 promptManager().then(function (res) {
     const manager = new Manager(res.name, res.id, res.email, res.officeNumber);
-    //data.push(manager);
+    teamData.push(manager);
     nextEmployee();
 });
 
+function writeToFile(directory, fileName, data) {
+    if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory);
+          }
+   fs.writeFile(fileName, data, function(err){
+       if(err){
+           return console.log(err);
+           
+       }
+   });
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML, including temp div for each employee!
-
-//let data = [];
-//render(data);//need to pass in the array of objects
-
-
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-//fs write team.html in the output folder
 
